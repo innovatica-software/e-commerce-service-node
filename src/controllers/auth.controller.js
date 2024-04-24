@@ -15,12 +15,13 @@ const generateJWTToken = (user) => {
 const userRegistration = async (req, res) => {
   try {
     const { email, name, password } = req.body;
+    const passwrodType = "required";
     validate(
       { email, name, password },
       {
         email: "required",
         name: "required",
-        password: "required",
+        password: passwordType,
       }
     );
     const hashPassword = await bcrypt.hash(password, 9);
