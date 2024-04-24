@@ -18,15 +18,15 @@ const orderSchema = new mongoose.Schema({
   },
   taxPrice: {
     type: Number,
-    requried: true,
+    required: true,
   },
   shippingPrice: {
     type: Number,
-    requried: true,
+    required: true,
   },
   totalPrice: {
     type: Number,
-    requried: true,
+    required: true,
   },
   products: [
     {
