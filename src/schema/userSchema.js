@@ -1,15 +1,9 @@
 const { Schema, model } = require("mongoose");
 const { getCurrentDateTimeUTCPlus6 } = require("../helper/dateTimeHelpers");
-const uuidv4 = require("uuid").v4;
 const userSchema = new Schema({
- username : {
+ email : {
   type: String,
   required: true,
- },
- userId : {
-  type: String,
-  required: true,
-  default: uuidv4
  },
  name: {
   type: String,
@@ -18,6 +12,10 @@ const userSchema = new Schema({
  isAdmin: {
   type: Boolean,
   default: false
+ },
+ password: {
+  type: String,
+  required: true,
  },
  image: {
   type: String,
