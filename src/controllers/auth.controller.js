@@ -4,7 +4,7 @@ const UserModel = require("../models/userAuth");
 const validate = require("../validator/validate");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-
+const validationType = "required";
 const generateJWTToken = (user) => {
   const token = jwt.sign(user, jwtSecret, {
     expiresIn: "1d",
@@ -15,13 +15,12 @@ const generateJWTToken = (user) => {
 const userRegistration = async (req, res) => {
   try {
     const { email, name, password } = req.body;
-    const passwordType = "required";
     validate(
       { email, name, password },
       {
         email: "required",
         name: "required",
-        password: passwordType,
+        password: validationType,
       }
     );
     const hashPassword = await bcrypt.hash(password, 9);
