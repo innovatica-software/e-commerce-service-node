@@ -15,7 +15,7 @@ const generateJWTToken = (user) => {
 const userRegistration = async (req, res) => {
   try {
     const { email, name, password } = req.body;
-    const passwrodType = "required";
+    const passwordType = "required";
     validate(
       { email, name, password },
       {
