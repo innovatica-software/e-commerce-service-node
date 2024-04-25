@@ -7,7 +7,7 @@ const createUser = async (user) => {
 };
 
 const getUserByEmail = async (email) => {
-  const user = await User.findOne({ email: email });
+  const user = await User.findOne({ email: email.toString() });
   return user;
 };
 
