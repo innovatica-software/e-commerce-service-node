@@ -1,11 +1,11 @@
 const { jwtSecret } = require("../config/variables");
 const { errorResponseHandler } = require("../helper/errorResponseHandler");
+const { statusCodes } = require("../helper/statusCodes");
 const UserModel = require("../models/userAuth");
 const validate = require("../validator/validate");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const validationType = "required";
-const usersList = require("../schema/userSchema");
 const generateJWTToken = (user) => {
   const token = jwt.sign(user, jwtSecret, {
     expiresIn: "1d",
@@ -25,6 +25,7 @@ const userRegistration = async (req, res) => {
       }
     );
     const hashPassword = await bcrypt.hash(password, 9);
+
     const user = await UserModel.createUser({
       email,
       name,
@@ -54,13 +55,23 @@ const userRegistration = async (req, res) => {
 const userLogin = async (req, res) => {
   const { email, password } = req.body;
   try {
-    const existingUser = await usersList.findOne({ email: email });
+    const existingUser = await UserModel.getUserByEmail(email);
     if (!existingUser) {
-      return res.status(404).json({ message: "User Not Registered" });
+      throw Object.assign(new Error(), {
+        status: statusCodes.NOT_FOUND,
+        error: {
+          code: 40401,
+        },
+      });
     }
     const matchPassword = await bcrypt.compare(password, existingUser.password);
     if (!matchPassword) {
-      return res.status(400).json({ message: "Wrong Password" });
+      throw Object.assign(new Error(), {
+        status: statusCodes.NOT_FOUND,
+        error: {
+          code: 40125,
+        },
+      });
     }
 
     const token = generateJWTToken({
