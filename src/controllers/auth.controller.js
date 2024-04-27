@@ -67,7 +67,7 @@ const userLogin = async (req, res) => {
     const matchPassword = await bcrypt.compare(password, existingUser.password);
     if (!matchPassword) {
       throw Object.assign(new Error(), {
-        status: statusCodes.NOT_FOUND,
+        status: statusCodes.UNAUTHORIZED,
         error: {
           code: 40125,
         },
