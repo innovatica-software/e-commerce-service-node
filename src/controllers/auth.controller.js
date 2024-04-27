@@ -1,5 +1,6 @@
 const { jwtSecret } = require("../config/variables");
 const { errorResponseHandler } = require("../helper/errorResponseHandler");
+const { statusCodes } = require("../helper/statusCodes");
 const UserModel = require("../models/userAuth");
 const validate = require("../validator/validate");
 const bcrypt = require("bcrypt");
@@ -11,7 +12,7 @@ const generateJWTToken = (user) => {
   });
   return token;
 };
-
+//Registration
 const userRegistration = async (req, res) => {
   try {
     const { email, name, password } = req.body;
@@ -24,6 +25,7 @@ const userRegistration = async (req, res) => {
       }
     );
     const hashPassword = await bcrypt.hash(password, 9);
+
     const user = await UserModel.createUser({
       email,
       name,
@@ -49,7 +51,51 @@ const userRegistration = async (req, res) => {
     errorResponseHandler(err, req, res);
   }
 };
+//Login
+const userLogin = async (req, res) => {
+  const { email, password } = req.body;
+  try {
+    const existingUser = await UserModel.getUserByEmail(email);
+    if (!existingUser) {
+      throw Object.assign(new Error(), {
+        status: statusCodes.NOT_FOUND,
+        error: {
+          code: 40401,
+        },
+      });
+    }
+    const matchPassword = await bcrypt.compare(password, existingUser.password);
+    if (!matchPassword) {
+      throw Object.assign(new Error(), {
+        status: statusCodes.UNAUTHORIZED,
+        error: {
+          code: 40125,
+        },
+      });
+    }
+
+    const token = generateJWTToken({
+      email,
+      isAdmin: existingUser.isAdmin,
+      id: existingUser._id,
+    });
+    const response = {
+      token,
+      email: email,
+      name: existingUser.name,
+      username: email,
+      isAdmin: existingUser.isAdmin,
+      id: existingUser.id,
+      _id: existingUser._id,
+    };
+
+    res.success(response, "User Logged In Successfull");
+  } catch (err) {
+    errorResponseHandler(err, req, res);
+  }
+};
 
 module.exports = {
   userRegistration,
+  userLogin,
 };
