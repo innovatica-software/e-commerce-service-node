@@ -1,7 +1,7 @@
-const UserList = require("../schema/userSchema");
+const User = require("../schema/userSchema");
 
 const getAllUsers = async (req, res) => {
-  const users = await UserList.find();
+  const users = await User.find();
   const alluserList = res.json(users);
   return alluserList;
 };
