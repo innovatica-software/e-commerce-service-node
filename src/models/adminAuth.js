@@ -1,9 +1,8 @@
 const User = require("../schema/userSchema");
 
-const getAllUsers = async (req, res) => {
+const getAllUsers = async () => {
   const users = await User.find();
-  const alluserList = res.json(users);
-  return alluserList;
+  return users;
 };
 module.exports = {
   getAllUsers,
