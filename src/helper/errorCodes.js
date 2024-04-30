@@ -127,7 +127,7 @@ const errorCodes = {
   },
   40114: {
     reason: "InsufficientPrivileges",
-    message: "Access denied. This resource is only accessible to shop admins.",
+    message: "Access denied. This resource is only accessible to admins.",
   },
   40125: {
     reason: "PasswordValidationError",
