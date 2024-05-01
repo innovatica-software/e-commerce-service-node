@@ -5,10 +5,10 @@ const createProduct = async (req, res) => {
         const {
             name, price, description, category, brand, countInStock
         } = req.body;
-        // const { userId } = req.user;
+        const { id } = req.user;
         const newProduct = await ProductModel.createProduct({
             name, price, description, category, brand, countInStock,
-            // userId,
+            userId:id
         });
         res.created(newProduct, "Product created successfully ");
     } catch (err) {
