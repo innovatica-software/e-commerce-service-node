@@ -10,7 +10,8 @@ const productSchema = new mongoose.Schema({
   userId: { 
     type: String, 
     ref: "User", 
-    required: true },
+    required: true 
+  },
   name: {
     type: String,
     required: true,
