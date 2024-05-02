@@ -12,7 +12,6 @@ const defaultRoutes = [
     path: "/products",
     route: productRoute,
   },
-  ,
   {
     path: "/admin",
     route: adminRoute,
