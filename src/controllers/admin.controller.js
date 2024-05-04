@@ -1,4 +1,6 @@
+const { errorResponseHandler } = require("../helper/errorResponseHandler");
 const Users = require("../models/adminAuth");
+
 const getUsers = async (req, res) => {
   try {
     const allUser = await Users.getAllUsers();
@@ -7,4 +9,5 @@ const getUsers = async (req, res) => {
     errorResponseHandler(err, req, res);
   }
 };
+
 module.exports = { getUsers };

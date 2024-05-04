@@ -5,7 +5,12 @@ const createProduct = async (data) => {
   const createdProduct = await newProduct.save();
   return createdProduct;
 };
+const getAllProducts = async () => {
+  const products = await Product.find();
+  return products;
+};
 
 module.exports = {
-    createProduct,
-}
+  createProduct,
+  getAllProducts,
+};
