@@ -28,7 +28,17 @@ const getProducts = async (req, res) => {
     errorResponseHandler(err, req, res);
   }
 };
+const getSingleProduct = async (req, res) => {
+  try {
+    const productId = req.params.id;
+    const singleProduct = await ProductModel.getProductById(productId);
+    res.success(singleProduct, "Product Loaded Succesfully");
+  } catch (err) {
+    errorResponseHandler(err, req, res);
+  }
+};
 module.exports = {
   createProduct,
   getProducts,
+  getSingleProduct,
 };
