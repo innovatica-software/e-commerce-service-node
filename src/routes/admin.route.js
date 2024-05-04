@@ -6,4 +6,5 @@ const router = Router();
 
 router.get("/userlist", adminAuthenticate, getUsers);
 
+
 module.exports = router;
