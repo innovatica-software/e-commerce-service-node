@@ -4,9 +4,11 @@ const {
   getProducts,
   getSingleProduct,
 } = require("../controllers/product.controller");
-const { adminAuthenticate } = require("../middleware/authenticate");
+const {
+  adminAuthenticate,
+  userAuthenticate,
+} = require("../middleware/authenticate");
 const { createReview } = require("../controllers/review.controller");
-const { userAuthenticate } = require("../middleware/user.authenticate");
 const router = Router();
 router.post("/create", adminAuthenticate, createProduct);
 router.get("/", getProducts);
