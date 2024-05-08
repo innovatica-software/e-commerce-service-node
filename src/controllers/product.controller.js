@@ -37,6 +37,7 @@ const getSingleProduct = async (req, res) => {
     errorResponseHandler(err, req, res);
   }
 };
+
 module.exports = {
   createProduct,
   getProducts,

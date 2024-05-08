@@ -7,10 +7,10 @@ const productSchema = new mongoose.Schema({
     default: uuidv4,
     required: true,
   },
-  userId: { 
-    type: String, 
-    ref: "User", 
-    required: true 
+  userId: {
+    type: String,
+    ref: "User",
+    required: true,
   },
   name: {
     type: String,
@@ -20,15 +20,16 @@ const productSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
-  image: { type: String},
+  image: { type: String },
   category: {
     type: String,
     required: true,
   },
   description: {
-    type: String
+    type: String,
   },
   rating: {
+    default: 0,
     type: Number,
   },
   numReviews: { type: Number, default: 0 },
@@ -37,7 +38,7 @@ const productSchema = new mongoose.Schema({
     required: true,
   },
   countInStock: { type: Number, required: true },
-  createdAt: { type: Date, default: ()=> getCurrentDateTimeUTCPlus6()},
+  createdAt: { type: Date, default: () => getCurrentDateTimeUTCPlus6() },
 });
 const Product = mongoose.model("Product", productSchema);
 module.exports = Product;

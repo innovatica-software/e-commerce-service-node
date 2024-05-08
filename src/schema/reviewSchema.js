@@ -1,12 +1,6 @@
 const mongoose = require("mongoose");
 const { getCurrentDateTimeUTCPlus6 } = require("../helper/dateTimeHelpers");
-const uuidv4 = require("uuid").v4;
 const reviewSchema = new mongoose.Schema({
-  reviewId: {
-    type: String,
-    required: true,
-    default: uuidv4,
-  },
   productId: {
     type: String,
     ref: "Product",
