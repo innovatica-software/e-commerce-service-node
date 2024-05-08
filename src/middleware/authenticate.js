@@ -6,42 +6,48 @@ const { jwtSecret } = require("../config/variables.js");
 const isTokenExpired = (expirationTime) =>
   expirationTime <= Math.floor(Date.now() / 1000);
 
-const adminAuthenticate = (req, res, next) => {
-  try {
-    const token = req.headers.authorization?.split(" ")[1] || req.headers.token;
+const authenticate =
+  (isAdmin = false) =>
+  (req, res, next) => {
+    try {
+      const token =
+        req.headers.authorization?.split(" ")[1] || req.headers.token;
 
-    if (!token) {
-      throw Object.assign(new Error(), {
-        status: statusCodes.UNAUTHORIZED,
-        error: {
-          code: 40113,
-        },
-      });
+      if (!token) {
+        throw Object.assign(new Error(), {
+          status: statusCodes.UNAUTHORIZED,
+          error: {
+            code: 40113,
+          },
+        });
+      }
+      const decoded = jsonwebtoken.verify(token, jwtSecret);
+
+      if (isTokenExpired(decoded.exp)) {
+        throw Object.assign(new Error(), {
+          status: statusCodes.UNAUTHORIZED,
+          error: {
+            code: 40110,
+          },
+        });
+      }
+      if (isAdmin && !decoded.isAdmin) {
+        throw Object.assign(new Error(), {
+          status: statusCodes.UNAUTHORIZED,
+          error: {
+            code: 40114,
+          },
+        });
+      }
+
+      req.user = decoded;
+      return next();
+    } catch (err) {
+      errorResponseHandler(err, req, res);
     }
-    const decoded = jsonwebtoken.verify(token, jwtSecret);
+  };
 
-    if (isTokenExpired(decoded.exp)) {
-      throw Object.assign(new Error(), {
-        status: statusCodes.UNAUTHORIZED,
-        error: {
-          code: 40110,
-        },
-      });
-    }
-    if (!decoded.isAdmin) {
-      throw Object.assign(new Error(), {
-        status: statusCodes.UNAUTHORIZED,
-        error: {
-          code: 40114,
-        },
-      });
-    }
+const adminAuthenticate = authenticate(true);
+const userAuthenticate = authenticate();
 
-    req.user = decoded;
-    return next();
-  } catch (err) {
-    errorResponseHandler(err, req, res);
-  }
-};
-
-module.exports = { adminAuthenticate };
+module.exports = { adminAuthenticate, userAuthenticate };
