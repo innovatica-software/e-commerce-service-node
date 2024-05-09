@@ -36,7 +36,9 @@ const productSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
-  countInStock: { type: Number, required: true },
+  countInStock: { type: Number, 
+    required: true 
+  },
   createdAt: { type: Date, default: ()=> getCurrentDateTimeUTCPlus6()},
 });
 const Product = mongoose.model("Product", productSchema);
