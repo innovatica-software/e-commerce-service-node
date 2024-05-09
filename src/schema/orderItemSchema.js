@@ -1,8 +1,7 @@
 const mongoose = require("mongoose");
 const { getCurrentDateTimeUTCPlus6 } = require("../helper/dateTimeHelpers");
 const orderItemSchema = new mongoose.Schema({
-  productId: { type: String, ref: "Product" },
-  // orderId: { type: String, ref: "Order" },
+  productId: { type: mongoose.Schema.Types.ObjectId, ref: "Product" },
   qty: {
     type: Number,
     required: true,
