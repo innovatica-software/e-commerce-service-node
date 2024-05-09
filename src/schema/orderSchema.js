@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const { getCurrentDateTimeUTCPlus6 } = require("../helper/dateTimeHelpers");
 const orderSchema = new mongoose.Schema({
   userId: {
-    type: String,
+    type: mongoose.Schema.Types.ObjectId,
     ref: "User",
     required: true,
   },
@@ -24,12 +24,12 @@ const orderSchema = new mongoose.Schema({
   },
   orderItems: [
     {
-      type: String,
+      type: mongoose.Schema.Types.ObjectId,
       ref: "OrderItem",
     },
   ],
   shippingAddress: {
-    type: String,
+    type: mongoose.Schema.Types.ObjectId,
     ref: "ShippingAddress",
   },
   isPaid: { type: Boolean, default: false },
