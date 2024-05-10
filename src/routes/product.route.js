@@ -4,16 +4,20 @@ const {
   getProducts,
   getSingleProduct,
 } = require("../controllers/product.controller");
-const multer = require('multer')
-const upload = multer({
-  dest: "tmp/",
-  limits: {
-    fileSize: 5 * 1024 * 1024
-  }
-});
-const { adminAuthenticate } = require("../middleware/authenticate");
+const {
+  adminAuthenticate,
+  userAuthenticate,
+} = require("../middleware/authenticate");
+const { createReview } = require("../controllers/review.controller");
 const router = Router();
-router.post("/create", adminAuthenticate,  upload.single("image"), createProduct);
+router.post(
+  "/create",
+  adminAuthenticate,
+  upload.single("image"),
+  createProduct
+);
 router.get("/", getProducts);
 router.get("/:id", getSingleProduct);
+router.post("/review/:productId", userAuthenticate, createReview);
+
 module.exports = router;

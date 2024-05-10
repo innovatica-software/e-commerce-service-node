@@ -77,7 +77,7 @@ const userLogin = async (req, res) => {
     const token = generateJWTToken({
       email,
       isAdmin: existingUser.isAdmin,
-      id: existingUser._id,
+      userId: existingUser._id,
     });
     const response = {
       token,

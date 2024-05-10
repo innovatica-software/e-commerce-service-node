@@ -149,6 +149,10 @@ const errorCodes = {
     reason: "ConflictSubscription",
     message: "Shop already have a subscription.",
   },
+  40903: {
+    reason: "ConflictReview",
+    message: "User Already Given Review to this product",
+  },
   50001: {
     reason: "UnknownError",
     message: "An unknown error occurred.",
