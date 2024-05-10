@@ -1,14 +1,8 @@
 const mongoose = require("mongoose");
 const { getCurrentDateTimeUTCPlus6 } = require("../helper/dateTimeHelpers");
-const uuidv4 = require("uuid").v4;
 const orderSchema = new mongoose.Schema({
-  orderId: {
-    type: String,
-    default: uuidv4,
-    required: true,
-  },
   userId: {
-    type: String,
+    type: mongoose.Schema.Types.ObjectId,
     ref: "User",
     required: true,
   },
@@ -28,12 +22,16 @@ const orderSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
-  products: [
+  orderItems: [
     {
-      type: String,
+      type: mongoose.Schema.Types.ObjectId,
       ref: "OrderItem",
     },
   ],
+  shippingAddress: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "ShippingAddress",
+  },
   isPaid: { type: Boolean, default: false },
   paidAt: {
     type: Date,

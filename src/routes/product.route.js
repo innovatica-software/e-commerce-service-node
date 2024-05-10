@@ -10,7 +10,12 @@ const {
 } = require("../middleware/authenticate");
 const { createReview } = require("../controllers/review.controller");
 const router = Router();
-router.post("/create", adminAuthenticate, createProduct);
+router.post(
+  "/create",
+  adminAuthenticate,
+  upload.single("image"),
+  createProduct
+);
 router.get("/", getProducts);
 router.get("/:id", getSingleProduct);
 router.post("/review/:productId", userAuthenticate, createReview);
