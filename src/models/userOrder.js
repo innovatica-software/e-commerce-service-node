@@ -5,6 +5,7 @@ const createOrder = async (data) => {
   const createdOrder = await newOrder.save();
   return createdOrder;
 };
+
 const getOrderById = async (orderId) => {
   const order = await Order.findOne({ _id: orderId });
   return order;

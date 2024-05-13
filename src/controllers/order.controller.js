@@ -1,27 +1,34 @@
 const OrderModel = require("../models/userOrder");
 const ProductModel = require("../models/product");
-const shippingModel = require("../models/userShippingAddress");
+const OrderItemModel = require("../models/OrderItems");
+const ShippingAddressModel = require("../models/ShippingAddress");
 const { errorResponseHandler } = require("../helper/errorResponseHandler");
 
 const createOrder = async (req, res) => {
   try {
-    const { paymentMethod, taxPrice, shippingPrice, totalPrice } = req.body;
-    const { userId } = req.user;
-
-    const { productId } = req.params;
-    const orderItems = await ProductModel.getProductById(productId);
-    const shippingAddress = await shippingModel.getAddressById(userId);
-
-    console.log(orderItems);
-
-    const newOrder = await OrderModel.createOrder({
-      userId,
+    const {
       orderItems,
       paymentMethod,
       taxPrice,
       shippingPrice,
       totalPrice,
       shippingAddress,
+    } = req.body;
+    const { userId } = req.user;
+
+    const orderItemIds = await OrderItemModel.addOrderItems(orderItems);
+    const shippingAddressId = await ShippingAddressModel.createShippingAddress(
+      shippingAddress
+    );
+    await ProductModel.updateProductStock(orderItems);
+    const newOrder = await OrderModel.createOrder({
+      userId,
+      orderItems: orderItemIds,
+      paymentMethod,
+      taxPrice,
+      shippingPrice,
+      totalPrice,
+      shippingAddress: shippingAddressId,
     });
     res.created(
       newOrder,
@@ -32,20 +39,5 @@ const createOrder = async (req, res) => {
     errorResponseHandler(err, req, res);
   }
 };
-const getSingleOrder = async (req, res) => {
-  try {
-    const userId = req.user;
-    const producId = req.params.id;
-    const productDetails = await ProductModel.getProductById(producId);
-    const singleOrder = await OrderModel.getOrderById(userId);
-    res.success(
-      productDetails,
-      singleOrder,
-      "Order Details Loaded Succesfully"
-    );
-  } catch (err) {
-    errorResponseHandler(err, req, res);
-  }
-};
 
-module.exports = { createOrder, getSingleOrder };
+module.exports = { createOrder };

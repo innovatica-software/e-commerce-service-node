@@ -23,10 +23,30 @@ const updateProductReviewsAndRating = async (
     { $set: { numReviews: newNumReviews, rating: newRating } }
   );
 };
+const updateProductStock = async (orderItems) => {
+  const productIdsStock = orderItems.map(({ qty, product }) => ({
+    productId: product,
+    quantity: qty,
+  }));
+  const updateOperations = productIdsStock.map(({ productId, quantity }) => ({
+    filter: { _id: productId },
+    update: { $inc: { countInStock: -quantity } },
+  }));
+
+  const updates = updateOperations.map((operation) => ({
+    updateOne: {
+      filter: operation.filter,
+      update: operation.update,
+    },
+  }));
+
+  await Product.bulkWrite(updates);
+};
 
 module.exports = {
   createProduct,
   getAllProducts,
   getProductById,
   updateProductReviewsAndRating,
+  updateProductStock,
 };
