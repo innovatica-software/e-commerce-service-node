@@ -10,6 +10,13 @@ const {
 } = require("../middleware/authenticate");
 const { createReview } = require("../controllers/review.controller");
 const router = Router();
+const multer = require("multer");
+const upload = multer({
+  dest: "tmp/",
+  limits: {
+    fileSize: 5 * 1024 * 1024,
+  },
+});
 router.post(
   "/create",
   adminAuthenticate,
