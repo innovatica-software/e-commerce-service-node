@@ -153,10 +153,6 @@ const errorCodes = {
     reason: "ConflictReview",
     message: "User Already Given Review to this product",
   },
-  40904: {
-    reason: "ConflictAddress",
-    message: "User Already Added Address",
-  },
   50001: {
     reason: "UnknownError",
     message: "An unknown error occurred.",

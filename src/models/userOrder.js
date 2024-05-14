@@ -6,9 +6,5 @@ const createOrder = async (data) => {
   return createdOrder;
 };
 
-const getOrderById = async (orderId) => {
-  const order = await Order.findOne({ _id: orderId });
-  return order;
-};
 
-module.exports = { createOrder, getOrderById };
+module.exports = { createOrder };
