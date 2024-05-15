@@ -7,13 +7,9 @@ const shippingAddSchema = new mongoose.Schema({
   city: String,
   postalCode: {
     type: String,
-    required: true
-  },
-  country: String,
-  shippingPrice: {
-    type: Number,
     required: true,
   },
+  country: String,
 });
 const ShippingAddress = mongoose.model("ShippingAddress", shippingAddSchema);
 module.exports = ShippingAddress;

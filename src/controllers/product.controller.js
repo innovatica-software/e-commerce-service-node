@@ -2,6 +2,7 @@ const { log } = require("console");
 const { errorResponseHandler } = require("../helper/errorResponseHandler");
 const ProductModel = require("../models/product");
 const cloudinary = require("cloudinary");
+
 const fs = require("fs");
 cloudinary.config({
   cloud_name:process.env.cloud_name,
