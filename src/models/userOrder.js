@@ -17,10 +17,10 @@ const getOrders = async (userId) => {
       path: "shippingAddress",
       select: "_id address city postalCode country",
     })
-    .populate({
-      path: "userId",
-      select: "_id username email name isAdmin",
-    })
+    // .populate({
+    //   path: "userId",
+    //   select: "_id username email name isAdmin",
+    // })
     .select("-_id");
   return Orders;
 };
