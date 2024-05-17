@@ -40,4 +40,14 @@ const createOrder = async (req, res) => {
   }
 };
 
-module.exports = { createOrder };
+const getAllOrders = async (req, res) => {
+  try {
+    const userId = req.user.userId;
+    const allOrders = await OrderModel.getOrders(userId);
+    res.success(allOrders, "All Order Loaded Succesfully");
+  } catch (err) {
+    errorResponseHandler(err, req, res);
+  }
+};
+
+module.exports = { createOrder, getAllOrders };
