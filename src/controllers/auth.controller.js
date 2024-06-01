@@ -89,7 +89,7 @@ const userLogin = async (req, res) => {
       _id: existingUser._id,
     };
 
-    res.success(response, "User Logged In Successfull");
+    res.success(response, "User Logged In Successful");
   } catch (err) {
     errorResponseHandler(err, req, res);
   }
