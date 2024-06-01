@@ -12,7 +12,10 @@ module.exports = {
   },
   servers: [
     {
-      url: `${process.env.HOST}:${process.env.PORT}`,
+      url:
+        process.env.process.env === "development"
+          ? `${process.env.HOST}:${process.env.PORT}`
+          : process.env.HOST,
       description: "Server",
     },
   ],
