@@ -13,7 +13,7 @@ module.exports = {
   servers: [
     {
       url:
-        process.env.process.env === "development"
+        process.env.NODE_ENV === "development"
           ? `${process.env.HOST}:${process.env.PORT}`
           : process.env.HOST,
       description: "Server",
