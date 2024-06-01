@@ -5,6 +5,7 @@ module.exports = {
   "/api/health/check": Health.health,
   "/api/users/register": Auth.register,
   "/api/users/login": Auth.login,
+  "/api/products/create": Product.createProduct,
   "/api/products": Product.products,
   "/api/products/{_id}": Product.productById,
 };
