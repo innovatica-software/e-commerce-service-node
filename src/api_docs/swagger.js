@@ -17,4 +17,9 @@ module.exports = {
   servers: meta.servers,
   paths: paths,
   components: components,
+  security: [
+    {
+      bearerAuth: [],
+    },
+  ],
 };

@@ -1,17 +1,49 @@
-// swaggerDocs/productDoc.js
-
 module.exports = {
-  products: {
+  createProduct: {
     post: {
       tags: ["Product"],
       summary: "Create a new product",
-      produces: ["application/json"],
-      consumes: ["application/json"],
+      consumes: ["multipart/form-data"],
+      security: [{ bearerAuth: [] }],
       requestBody: {
         required: true,
         content: {
-          "application/json": {
-            schema: { $ref: "#/components/schemas/Product" },
+          "multipart/form-data": {
+            schema: {
+              type: "object",
+              properties: {
+                name: {
+                  type: "string",
+                  description: "Product name",
+                },
+                price: {
+                  type: "number",
+                  description: "Product price",
+                },
+                description: {
+                  type: "string",
+                  description: "Product description",
+                },
+                category: {
+                  type: "string",
+                  description: "Product category",
+                },
+                brand: {
+                  type: "string",
+                  description: "Product brand",
+                },
+                countInStock: {
+                  type: "integer",
+                  description: "Product count in stock",
+                },
+                image: {
+                  type: "string",
+                  format: "binary",
+                  description: "Product image",
+                },
+              },
+              required: ["name", "price"],
+            },
           },
         },
       },
@@ -22,11 +54,16 @@ module.exports = {
         400: {
           description: "Bad request.",
         },
+        401: {
+          description: "Unauthorized: Bearer token missing or invalid.",
+        },
         500: {
           description: "Internal server error.",
         },
       },
     },
+  },
+  products: {
     get: {
       tags: ["Product"],
       summary: "Get all products",
