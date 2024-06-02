@@ -82,6 +82,49 @@ module.exports = {
       },
       required: ["name", "price"],
     },
+    Order: {
+      type: "object",
+      properties: {
+        orderItems: {
+          type: "array",
+          items: {
+            type: "object",
+            properties: {
+              productId: { type: "string", description: "ID of the product" },
+              quantity: {
+                type: "integer",
+                description: "Quantity of the product",
+              },
+            },
+          },
+          description: "List of order items",
+          required: ["productId", "quantity"],
+        },
+        paymentMethod: { type: "string", description: "Payment method" },
+        taxPrice: { type: "number", description: "Tax price" },
+        shippingPrice: { type: "number", description: "Shipping price" },
+        totalPrice: { type: "number", description: "Total price" },
+        shippingAddress: {
+          type: "object",
+          properties: {
+            address: { type: "string", description: "Shipping address" },
+            city: { type: "string", description: "City" },
+            postalCode: { type: "string", description: "Postal code" },
+            country: { type: "string", description: "Country" },
+          },
+          description: "Shipping address details",
+          required: ["address", "city", "postalCode", "country"],
+        },
+      },
+      required: [
+        "orderItems",
+        "paymentMethod",
+        "taxPrice",
+        "shippingPrice",
+        "totalPrice",
+        "shippingAddress",
+      ],
+    },
   },
   securitySchemes: {
     bearerAuth: {
