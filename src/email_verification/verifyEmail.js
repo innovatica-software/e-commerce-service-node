@@ -15,10 +15,10 @@ const {
 const transporter = nodemailer.createTransport({
   host: emailHost,
   port: emailPort,
-  secure: true, // true for 465, false for other ports
+  secure: true,
   auth: {
-    user: emailId, // sender email address
-    pass: emailPassword, // sender email password
+    user: emailId,
+    pass: emailPassword,
   },
 });
 

@@ -18,15 +18,12 @@ const generateJWTToken = (user) => {
 };
 
 const shouldVerifyEmail = () => {
-  if (
+  return !(
     process.env.NODE_ENV === "test" ||
     ENABLE_EMAIL_ADDRESS_VERIFICATION.toLowerCase() !== "true"
-  )
-    return false;
-  return true;
+  );
 };
 
-//Registration
 const userRegistration = async (req, res) => {
   try {
     const { email, name, password } = req.body;
@@ -53,7 +50,6 @@ const userRegistration = async (req, res) => {
     errorResponseHandler(err, req, res);
   }
 };
-//Login
 const userLogin = async (req, res) => {
   const { email, password } = req.body;
   try {
@@ -98,7 +94,6 @@ const emailVerification = async (req, res) => {
     const verified = jwt.verify(req.query.verifyToken, jwtSecret);
     await UserModel.updateUserStatus(verified.email);
     res.redirect("/api/email/verification-success");
-    // res.success({}, "User Email Successfully Verified");
   } catch (e) {
     errorResponseHandler(err, req, res);
   }

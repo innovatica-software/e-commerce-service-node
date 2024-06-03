@@ -20,6 +20,5 @@ module.exports = {
   emailPort,
   emailId,
   emailPassword,
-  HOST,
   ENABLE_EMAIL_ADDRESS_VERIFICATION,
 };
