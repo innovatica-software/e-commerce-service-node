@@ -6,6 +6,10 @@ const userSchema = new Schema({
     required: true,
     unique: true,
   },
+  isEmailVerified: {
+    type: Boolean,
+    default: false,
+  },
   name: {
     type: String,
     required: true,
