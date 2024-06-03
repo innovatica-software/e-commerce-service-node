@@ -11,7 +11,24 @@ const getUserByEmail = async (email) => {
   return user;
 };
 
+const checkEmailExistAndVerified = async (email) => {
+  const user = await User.findOne({
+    email: email.toString(),
+    isEmailVerified: true,
+  });
+  return user;
+};
+
+const updateUserStatus = async (email) => {
+  const result = await User.updateOne(
+    { email },
+    { $set: { isEmailVerified: true } }
+  ).exec();
+  return result;
+};
 module.exports = {
   createUser,
   getUserByEmail,
+  updateUserStatus,
+  checkEmailExistAndVerified,
 };

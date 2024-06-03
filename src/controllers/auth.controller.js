@@ -1,4 +1,8 @@
-const { jwtSecret } = require("../config/variables");
+const {
+  jwtSecret,
+  ENABLE_EMAIL_ADDRESS_VERIFICATION,
+} = require("../config/variables");
+const { sendVerificationMail } = require("../email_verification/verifyEmail");
 const { errorResponseHandler } = require("../helper/errorResponseHandler");
 const { statusCodes } = require("../helper/statusCodes");
 const UserModel = require("../models/userAuth");
@@ -12,7 +16,14 @@ const generateJWTToken = (user) => {
   });
   return token;
 };
-//Registration
+
+const shouldVerifyEmail = () => {
+  return !(
+    process.env.NODE_ENV === "test" ||
+    ENABLE_EMAIL_ADDRESS_VERIFICATION.toLowerCase() !== "true"
+  );
+};
+
 const userRegistration = async (req, res) => {
   try {
     const { email, name, password } = req.body;
@@ -25,38 +36,25 @@ const userRegistration = async (req, res) => {
       }
     );
     const hashPassword = await bcrypt.hash(password, 9);
-
-    const user = await UserModel.createUser({
+    if (shouldVerifyEmail()) {
+      await sendVerificationMail(email);
+    }
+    await UserModel.createUser({
       email,
       name,
       password: hashPassword,
     });
-    const token = generateJWTToken({
-      email,
-      name,
-      isAdmin: user.isAdmin,
-      id: user._id,
-    });
-    const response = {
-      token,
-      email,
-      name,
-      username: email,
-      isAdmin: user.isAdmin,
-      id: user.id,
-      _id: user._id,
-    };
-    res.success(response, "User Registration Successfull");
+
+    res.success({}, "Please check your email for verification.");
   } catch (err) {
     errorResponseHandler(err, req, res);
   }
 };
-//Login
 const userLogin = async (req, res) => {
   const { email, password } = req.body;
   try {
-    const existingUser = await UserModel.getUserByEmail(email);
-    if (!existingUser) {
+    const user = await UserModel.checkEmailExistAndVerified(email);
+    if (!user) {
       throw Object.assign(new Error(), {
         status: statusCodes.NOT_FOUND,
         error: {
@@ -64,8 +62,8 @@ const userLogin = async (req, res) => {
         },
       });
     }
-    const matchPassword = await bcrypt.compare(password, existingUser.password);
-    if (!matchPassword) {
+    const isPasswordMatch = await bcrypt.compare(password, user.password);
+    if (!isPasswordMatch) {
       throw Object.assign(new Error(), {
         status: statusCodes.UNAUTHORIZED,
         error: {
@@ -76,17 +74,13 @@ const userLogin = async (req, res) => {
 
     const token = generateJWTToken({
       email,
-      isAdmin: existingUser.isAdmin,
-      userId: existingUser._id,
+      userId: user._id,
     });
     const response = {
       token,
       email: email,
-      name: existingUser.name,
-      username: email,
-      isAdmin: existingUser.isAdmin,
-      id: existingUser.id,
-      _id: existingUser._id,
+      name: user.name,
+      id: user.id,
     };
 
     res.success(response, "User Logged In Successful");
@@ -95,7 +89,18 @@ const userLogin = async (req, res) => {
   }
 };
 
+const emailVerification = async (req, res) => {
+  try {
+    const verified = jwt.verify(req.query.verifyToken, jwtSecret);
+    await UserModel.updateUserStatus(verified.email);
+    res.redirect("/api/email/verification-success");
+  } catch (e) {
+    errorResponseHandler(err, req, res);
+  }
+};
+
 module.exports = {
   userRegistration,
   userLogin,
+  emailVerification,
 };

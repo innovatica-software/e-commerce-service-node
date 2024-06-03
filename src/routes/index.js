@@ -5,10 +5,15 @@ const productRoute = require("./product.route");
 const adminRoute = require("./admin.route");
 const orderRoute = require("./order.route");
 const healthRoute = require("./health.route");
+const emailRoute = require("./email.route");
 const defaultRoutes = [
   {
     path: "/health",
     route: healthRoute,
+  },
+  {
+    path: "/email",
+    route: emailRoute,
   },
   {
     path: "/users",
