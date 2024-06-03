@@ -91,11 +91,15 @@ const userLogin = async (req, res) => {
 
 const emailVerification = async (req, res) => {
   try {
-    const verified = jwt.verify(req.query.verifyToken, jwtSecret);
+    const { verifyToken } = req.query;
+    const verified = jwt.verify(verifyToken, jwtSecret);
+    if (!verified) {
+      return res.redirect("/api/email/verification-failure");
+    }
     await UserModel.updateUserStatus(verified.email);
-    res.redirect("/api/email/verification-success");
-  } catch (e) {
-    errorResponseHandler(err, req, res);
+    return res.redirect("/api/email/verification-success");
+  } catch (err) {
+    return res.redirect("/api/email/verification-failure");
   }
 };
 
