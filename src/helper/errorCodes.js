@@ -137,6 +137,10 @@ const errorCodes = {
     reason: "NotFound",
     message: "User not found",
   },
+  40402: {
+    reason: "NotFound",
+    message: "This user is not a admin",
+  },
   40415: {
     reason: "SubscriptionNotFound",
     message: "You have not subscribed to this quiz level",
